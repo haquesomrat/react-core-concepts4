@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 function App() {
   return (
     <div className="App">
+      <LoadUsers></LoadUsers>
       <MyComponent brand='apple' price='500000'></MyComponent>
       <MyComponent brand='hp' price='30000'></MyComponent>
       <MyComponent brand='microsoft' price='80000'></MyComponent>
@@ -18,12 +19,25 @@ function LoadUsers() {
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then(res => res.json())
-      .then(data => console.log(data));
-  })
+      .then(data => setUsers(data));
+  }, [])
 
   return (
     <div>
-      <h1>Users Loaded</h1>
+      <h1>Users Loaded: {users.length}</h1>
+      {
+        users.map(user => <User name={user.name} phone={user.phone} email={user.email}></User>)
+      }
+    </div>
+  )
+}
+
+function User(props) {
+  return (
+    <div className='user'>
+      <h2>Name:{props.name}</h2>
+      <p>Number:{props.phone}</p>
+      <h5>Email: {props.email}</h5>
     </div>
   )
 }
